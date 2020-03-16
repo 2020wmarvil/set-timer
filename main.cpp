@@ -1,14 +1,25 @@
 #include <iostream>
 #include <gtkmm.h>
 
-// g++ main.cpp `pkg-config --cflags --libs gtkmm-3.0`
+void clicked() {
+    std::cout << "clicked" << std::endl;
+}
 
 int main(int argc, char *argv[]) {
-    Gtk::Main kit(argc, argv);
-    Gtk::Window window;
+    auto app = Gtk::Application::create(argc, argv, "org.gtkmm.examples.base");
 
-		Gtk::Button test;
-		window.add(test);
-    kit.run(window);
-    return 0;
+    auto builder = Gtk::Builder::create_from_file("../gui.glade");
+
+    Gtk::Window* window = nullptr;
+    builder->get_widget("window", window);
+    window->maximize();
+
+    Gtk::Button* button = nullptr;
+    builder->get_widget("button", button);
+    button->signal_clicked().connect(
+        sigc::ptr_fun(&clicked)
+    );
+
+
+    return app->run(*window);
 }
