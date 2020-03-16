@@ -24,6 +24,8 @@ protected:
     }
 };
 
+void clicked() { std::cout << "clicked\n"; }
+
 int main(int argc, char *argv[]) {
     auto app = Gtk::Application::create(argc, argv, "org.gtkmm.examples.base");
     auto builder = Gtk::Builder::create_from_file("../gui.glade");
