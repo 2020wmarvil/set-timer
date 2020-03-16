@@ -9,6 +9,7 @@ private:
     bool click1, click2;
     int x1, x2, y1, y2;
 protected:
+    bool on_button_press_event(GdkEventButton * event);
     bool on_draw(const Cairo::RefPtr<Cairo::Context>& cr) override;
 public:
     Canvas(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& refGlade)
