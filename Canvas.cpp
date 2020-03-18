@@ -28,7 +28,9 @@ bool Canvas::on_motion_notify_event(GdkEventMotion* event) {
         y2 = event->y;
 
         queue_draw();
+	return true;
     }
+    return false;
 }
 
 bool Canvas::on_draw(const Cairo::RefPtr<Cairo::Context>& cr) {
