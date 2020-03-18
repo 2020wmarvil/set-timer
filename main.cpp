@@ -28,6 +28,7 @@ int main(int argc, char *argv[]) {
 
     Canvas* area = nullptr;
     builder->get_widget_derived("drawingArea", area);
+    area->show();
 
     app->run(*window);
 

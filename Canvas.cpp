@@ -72,6 +72,6 @@ void Canvas::draw_text(const Cairo::RefPtr<Cairo::Context>& cr, const Glib::ustr
     layout->set_font_description(font);
     layout->get_pixel_size(text_width, text_height);
 
-    cr->move_to((width-text_width)/2, (height-text_height)/2);
+    cr->move_to((800-text_width)/2, (400-text_height)/2);
     layout->show_in_cairo_context(cr);
 }
