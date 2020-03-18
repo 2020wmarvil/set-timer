@@ -46,7 +46,7 @@ bool Canvas::on_draw(const Cairo::RefPtr<Cairo::Context>& cr) {
     return true;
 }
 
-void Canvas::draw_text(const Cairo::RefPtr<Cairo::Context>& cr, const std::string& str, int width, int height) {
+void Canvas::draw_text(const Cairo::RefPtr<Cairo::Context>& cr, const Glib::ustring& str, int width, int height) {
     Pango::FontDescription font;
     font.set_family("Monospace");
     font.set_weight(Pango::WEIGHT_BOLD);
