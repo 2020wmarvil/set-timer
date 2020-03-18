@@ -5,17 +5,28 @@ bool Canvas::on_button_press_event(GdkEventButton* event) {
         if(!click1 && !click2) {
             x1=event->x; y1=event->y;
             click1=true;
+            isDragging = true;
         }
 
         if(click1 && !click2 && (int)event->x != x1 && (int)event->y != y1) {
             x2=event->x; y2=event->y;
             click2=true;
+            isDragging = false;
 
             queue_draw();
         }
 
         return true;
     } return false;
+}
+
+bool Canvas::on_motion_notify_event(GdkEventMotion* event) {
+    if (isDragging) {
+        x2 = event->x;
+        y2 = event->y;
+
+        queue_draw();
+    }
 }
 
 bool Canvas::on_draw(const Cairo::RefPtr<Cairo::Context>& cr) {
@@ -31,12 +42,11 @@ bool Canvas::on_draw(const Cairo::RefPtr<Cairo::Context>& cr) {
     cr->save();
     cr->set_line_width(2);
     cr->set_source_rgb(1, 1, 1);
-    if(click1 && click2) {
-        cr->move_to(x1, y1);
-        cr->line_to(x2, y2);
-        cr->stroke();
-        click1 = false; click2 = false;
-    } cr->restore();
+    cr->move_to(x1, y1);
+    cr->line_to(x2, y2);
+    cr->stroke();
+    if(click2) { click1 = false; click2 = false; }
+    cr->restore();
 
     cr->save();
     cr->set_source_rgb(0.5, 0, 0.5);
