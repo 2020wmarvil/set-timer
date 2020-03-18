@@ -12,7 +12,9 @@ bool Canvas::on_button_press_event(GdkEventButton* event) {
             x2=event->x; y2=event->y;
             click2=true;
             isDragging = false;
-
+            line temp;
+            temp.x1=x1;temp.y1=y1;temp.x2=x2;temp.y2=y2;
+            lines.push_back(temp);
             queue_draw();
         }
 
@@ -42,6 +44,10 @@ bool Canvas::on_draw(const Cairo::RefPtr<Cairo::Context>& cr) {
     cr->save();
     cr->set_line_width(2);
     cr->set_source_rgb(1, 1, 1);
+    for(line i : lines) {
+        cr->move_to(i.x1,i.y1);
+        cr->line_to(i.x2,i.y2);
+    } //cr->stroke();
     cr->move_to(x1, y1);
     cr->line_to(x2, y2);
     cr->stroke();

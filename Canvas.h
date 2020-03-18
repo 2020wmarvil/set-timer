@@ -1,11 +1,16 @@
 #pragma once
 
+#include <vector>
+
 #include <gtkmm/drawingarea.h>
 #include <gtkmm/builder.h>
 
 class Canvas : public Gtk::DrawingArea {
 private:
     Glib::RefPtr<Gtk::Builder> m_refGlade;
+
+    struct line { int x1,y1,x2,y2; };
+    std::vector<line> lines;
 
     bool click1=false, click2=false, isDragging=false;
     int x1, x2, y1, y2;
