@@ -174,7 +174,20 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
-              <object class="GtkToolButton" id="line">
+              <object class="GtkToolButton" id="selectButton">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">select</property>
+                <property name="label" translatable="yes">Select</property>
+                <property name="use_underline">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">False</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton" id="lineButton">
                 <property name="name">Line</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
@@ -188,7 +201,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkToolButton" id="block">
+              <object class="GtkToolButton" id="blockButton">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">block</property>

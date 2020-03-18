@@ -1,5 +1,8 @@
+#include <iostream>
+
 #include <gtkmm/window.h>
 #include <gtkmm/builder.h>
+#include <gtkmm/toolbutton.h>
 
 #include "Canvas.h"
 
@@ -18,6 +21,10 @@
 // use pix_buf for a background logo when the application is empty
 // saving a built timer to an executable file that is a time
 
+void selectButton_clicked() { std::cout << "select\n"; }
+void lineButton_clicked() { std::cout << "line\n"; }
+void blockButton_clicked() { std::cout << "block\n"; }
+
 int main(int argc, char *argv[]) {
     auto app = Gtk::Application::create(argc, argv, "org.gtkmm.examples.base");
     auto builder = Gtk::Builder::create_from_file("../gui.glade");
@@ -29,6 +36,14 @@ int main(int argc, char *argv[]) {
     Canvas* area = nullptr;
     builder->get_widget_derived("drawingArea", area);
     area->show();
+
+    Gtk::ToolButton *selectButton=nullptr, *lineButton=nullptr, *blockButton=nullptr;
+    builder->get_widget("selectButton", selectButton);
+    builder->get_widget("lineButton", lineButton);
+    builder->get_widget("blockButton", blockButton);
+    selectButton->signal_clicked().connect(sigc::ptr_fun(&selectButton_clicked));
+    lineButton->signal_clicked().connect(sigc::ptr_fun(&lineButton_clicked));
+    blockButton->signal_clicked().connect(sigc::ptr_fun(&blockButton_clicked));
 
     app->run(*window);
 
