@@ -1,5 +1,5 @@
-#include <iostream>
-#include <gtkmm.h>
+#include <gtkmm/window.h>
+#include <gtkmm/builder.h>
 
 #include "Canvas.h"
 

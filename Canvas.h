@@ -1,6 +1,7 @@
 #pragma once
 
-#include <gtkmm.h>
+#include <gtkmm/drawingarea.h>
+#include <gtkmm/builder.h>
 
 class Canvas : public Gtk::DrawingArea {
 private:

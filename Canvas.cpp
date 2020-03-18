@@ -29,9 +29,9 @@ bool Canvas::on_draw(const Cairo::RefPtr<Cairo::Context>& cr) {
     cr->paint();
 
     cr->save();
+    cr->set_line_width(2);
+    cr->set_source_rgb(1, 1, 1);
     if(click1 && click2) {
-        cr->set_line_width(2);
-        cr->set_source_rgb(1, 1, 1);
         cr->move_to(x1, y1);
         cr->line_to(x2, y2);
         cr->stroke();
