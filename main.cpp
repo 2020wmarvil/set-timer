@@ -20,17 +20,17 @@
 // Non-modal AboutDialog to list the creators and link our repo
 // use pix_buf for a background logo when the application is empty
 // saving a built timer to an executable file that is a time
-
+extern "C" {
 void selectButton_clicked() { std::cout << "select\n"; }
 void lineButton_clicked() { std::cout << "line\n"; }
 void blockButton_clicked() { std::cout << "block\n"; }
-
+}
 int main(int argc, char *argv[]) {
     auto app = Gtk::Application::create(argc, argv, "org.gtkmm.examples.base");
     auto builder = Gtk::Builder::create_from_file("../gui.glade");
-    gtk_builder_add_callback_symbol(builder->gobj(),"lineButton_clicked",&lineButton_clicked);
+/*    gtk_builder_add_callback_symbol(builder->gobj(),"lineButton_clicked",&lineButton_clicked);
     gtk_builder_add_callback_symbol(builder->gobj(),"selectButton_clicked",&selectButton_clicked);
-    gtk_builder_add_callback_symbol(builder->gobj(),"blockButton_clicked",&blockButton_clicked);
+    gtk_builder_add_callback_symbol(builder->gobj(),"blockButton_clicked",&blockButton_clicked);*/
     gtk_builder_connect_signals(builder->gobj(),NULL);
 
     Gtk::Window* window = nullptr;
