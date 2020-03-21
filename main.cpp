@@ -2,7 +2,6 @@
 
 #include <gtkmm/window.h>
 #include <gtkmm/builder.h>
-#include <gtkmm/toolbutton.h>
 
 #include "Canvas.h"
 

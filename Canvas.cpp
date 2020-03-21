@@ -1,36 +1,54 @@
 #include "Canvas.h"
 
 bool Canvas::on_button_press_event(GdkEventButton* event) {
-    if(event->type == GDK_BUTTON_PRESS && event->button == 1 && toolStatus == LINE) {
-        if(!click1 && !click2) {
-            x1=event->x; y1=event->y;
-            click1=true;
-            isDragging = true;
-        }
+    if(event->type == GDK_BUTTON_PRESS && event->button == 1) {
+        switch (toolStatus) {
+            case SELECT:
+                click1 = false; click2 = false;
+                isDragging = false;
+                // this gonna be a whole dang jaunt
+                break;
+            case LINE:
+                if(!click1 && !click2) {
+                    x1 = event->x; y1 = event->y;
+                    click1 = true;
+                    isDragging = true;
+                }
 
-        if(click1 && !click2 && (int)event->x != x1 && (int)event->y != y1) {
-            x2=event->x; y2=event->y;
-            click2=true;
-            isDragging = false;
-            line temp;
-            temp.x1=x1;temp.y1=y1;temp.x2=x2;temp.y2=y2;
-            lines.push_back(temp);
-            queue_draw();
-        }
+                if(click1 && !click2 && (int)event->x != x1 && (int)event->y != y1) {
+                    x2 = event->x; y2 = event->y;
+                    click2 = true;
+                    isDragging = false;
 
-        return true;
+                    lines.push_back( { x1, y1, x2, y2 } );
+                    queue_draw();
+                } break;
+            case BLOCK:
+                click1 = false; click2 = false;
+                isDragging = false;
+
+                int size = 50;
+
+                lines.push_back( { (int)event->x-size, (int)event->y-size, (int)event->x+size, (int)event->y-size } );
+                lines.push_back( { (int)event->x-size, (int)event->y-size, (int)event->x-size, (int)event->y+size } );
+                lines.push_back( { (int)event->x+size, (int)event->y+size, (int)event->x+size, (int)event->y-size } );
+                lines.push_back( { (int)event->x+size, (int)event->y+size, (int)event->x-size, (int)event->y+size } );
+
+                queue_draw();
+
+                break;
+        } return true;
     } return false;
 }
 
 bool Canvas::on_motion_notify_event(GdkEventMotion* event) {
     if (isDragging) {
-        x2 = event->x;
-        y2 = event->y;
+        x2 = event->x; y2 = event->y;
 
         queue_draw();
-	return true;
-    }
-    return false;
+
+        return true;
+    } return false;
 }
 
 bool Canvas::on_draw(const Cairo::RefPtr<Cairo::Context>& cr) {
