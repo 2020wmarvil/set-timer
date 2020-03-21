@@ -5,6 +5,10 @@
 #include <gtkmm/drawingarea.h>
 #include <gtkmm/builder.h>
 
+enum ToolStatus { SELECT, LINE, BLOCK };
+
+extern int toolStatus;
+
 class Canvas : public Gtk::DrawingArea {
 private:
     Glib::RefPtr<Gtk::Builder> m_refGlade;

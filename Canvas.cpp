@@ -1,7 +1,7 @@
 #include "Canvas.h"
 
 bool Canvas::on_button_press_event(GdkEventButton* event) {
-    if( (event->type == GDK_BUTTON_PRESS) && (event->button == 1)) {
+    if(event->type == GDK_BUTTON_PRESS && event->button == 1 && toolStatus == LINE) {
         if(!click1 && !click2) {
             x1=event->x; y1=event->y;
             click1=true;
