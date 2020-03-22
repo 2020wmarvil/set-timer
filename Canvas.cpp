@@ -29,11 +29,11 @@ bool Canvas::on_button_press_event(GdkEventButton* event) {
 
                 int size = 50;
 
-                lines.push_back( { (int)event->x-size, (int)event->y-size, (int)event->x+size, (int)event->y-size } );
+                /*lines.push_back( { (int)event->x-size, (int)event->y-size, (int)event->x+size, (int)event->y-size } );
                 lines.push_back( { (int)event->x-size, (int)event->y-size, (int)event->x-size, (int)event->y+size } );
                 lines.push_back( { (int)event->x+size, (int)event->y+size, (int)event->x+size, (int)event->y-size } );
-                lines.push_back( { (int)event->x+size, (int)event->y+size, (int)event->x-size, (int)event->y+size } );
-
+                lines.push_back( { (int)event->x+size, (int)event->y+size, (int)event->x-size, (int)event->y+size } );*/
+		blocks.push_back(*(new Block((int)event->x,(int)event->y)));
                 queue_draw();
 
                 break;
@@ -68,6 +68,19 @@ bool Canvas::on_draw(const Cairo::RefPtr<Cairo::Context>& cr) {
         cr->move_to(i.x1,i.y1);
         cr->line_to(i.x2,i.y2);
     } //cr->stroke();
+    for(Block i: blocks) {
+	/*cr->move_to(i.getX()-25,i.getY()-25);
+	cr->line_to(i.getX()-25,i.getY()+25);
+	cr->line_to(i.getX()+25,i.getY()-25);
+	cr->move_to(i.getX()+25,i.getY()+25);
+	cr->line_to(i.getX()-25,i.getY()+25);
+	cr->line_to(i.getX()+25,i.getY()-25);*/
+	cr->move_to(i.getX()-25,i.getY()-25);
+	cr->line_to(i.getX()-25,i.getY()+25);
+	cr->line_to(i.getX()+25,i.getY()+25);
+	cr->line_to(i.getX()+25,i.getY()-25);
+	cr->line_to(i.getX()-25,i.getY()-25);
+    }
     cr->move_to(x1, y1);
     cr->line_to(x2, y2);
     cr->stroke();

@@ -4,7 +4,7 @@
 
 #include <gtkmm/drawingarea.h>
 #include <gtkmm/builder.h>
-
+#include "Block.h"
 enum ToolStatus { SELECT, LINE, BLOCK };
 
 extern int toolStatus;
@@ -15,7 +15,7 @@ private:
 
     struct line { int x1,y1,x2,y2; };
     std::vector<line> lines;
-
+    std::vector<Block> blocks;
     bool click1=false, click2=false, isDragging=false;
     int x1, x2, y1, y2;
 
