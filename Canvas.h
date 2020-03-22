@@ -20,7 +20,7 @@ private:
     Glib::RefPtr<Gtk::Builder> m_refGlade;
 
     std::vector<Drawable*> drawables;
-    
+
     bool click1=false, click2=false, isDragging=false;
 
     int clicked_x, clicked_y;

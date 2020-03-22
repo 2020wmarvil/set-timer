@@ -5,15 +5,15 @@
 
 class Line : public Drawable {
 private:
-    int x1, x2, x3, x4;
-    int y1, y2, y3, y4;
+    double x1, x2, x3, x4;
+    double y1, y2, y3, y4;
     int arrowHeadLength = 10;
 
     void calculateArrowHead() {
         int angle = 45;
         double theta = angle * (M_PI / 180);
 
-        int mx, my;
+        double mx, my;
         int vx = x2 - x1;
         int vy = y2 - y1;
         double vmag = sqrt(vx*vx + vy*vy);
