@@ -4,9 +4,28 @@ bool Canvas::on_button_press_event(GdkEventButton* event) {
     if(event->type == GDK_BUTTON_PRESS && event->button == 1) {
         switch (toolStatus) {
             case SELECT:
-                click1 = false; click2 = false;
+                // loop through all drawables and see if we clicked on any of them.
+                // if we find that we have clicked on one, then give a pointer to it to the selected_drawable variable
+                // and set isDragging to true
+                // if we did not click on one, set isDragging to false and selected_drawable to nullptr
+
+                if (selected_drawable) {
+                    selected_drawable = nullptr;
+                    isDragging = false;
+                    break;
+                }
+
                 isDragging = false;
-                // this gonna be a whole dang jaunt
+                selected_drawable = nullptr;
+
+                for (Drawable* drawable : drawables) {
+                    if (drawable->isClicked(event->x, event->y)) {
+                        selected_drawable = drawable;
+                        std::cout << "clicked\n";
+                        break;
+                    }
+                }
+
                 break;
             case LINE:
                 if(!click1 && !click2) {
@@ -39,6 +58,10 @@ bool Canvas::on_button_press_event(GdkEventButton* event) {
 
 bool Canvas::on_motion_notify_event(GdkEventMotion* event) {
     mouse_x = event->x; mouse_y = event->y;
+
+    if (selected_drawable) {
+        selected_drawable->translate(mouse_x, mouse_y);
+    }
 
     queue_draw();
 

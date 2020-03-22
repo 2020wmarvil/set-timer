@@ -48,4 +48,7 @@ public:
 
         cr->stroke();
     }
+
+	void translate(double new_x, double new_y) {}
+	bool isClicked(double mouse_x, double mouse_y) { return false; }
 };

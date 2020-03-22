@@ -8,7 +8,7 @@ private:
 	Block* next=nullptr;
 
 	int width = 48, height = 48;
-	int x, y, x2, y2;
+	int x, y;
 public:
 	Block(int x, int y) : x(x-width/2), y(y-height/2) {}
 
@@ -22,7 +22,15 @@ public:
 		cr->stroke();
 	}
 
-	void connect(Block &other) { next= &other; }
-	void setNext(Block &other) { next= &other; }
+	void translate(double new_x, double new_y) {
+		x = new_x - width/2; y = new_y - height/2;
+	}
+
+	bool isClicked(double mouse_x, double mouse_y) {
+		return mouse_x < x+width && mouse_x > x && mouse_y < y+height && mouse_y > y;
+	}
+
+	void connect(Block &other) { next = &other; }
+	void setNext(Block &other) { next = &other; }
 	Block* getNext() { return next; }
 };
