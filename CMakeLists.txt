@@ -14,6 +14,6 @@ pkg_check_modules(GTKMM REQUIRED gtkmm-3.0)
 include_directories(${GTKMM_INCLUDE_DIRS})
 link_directories(${GTKMM_LIBRARY_DIRS})
 
-set(SOURCE_FILES main.cpp Canvas.h Canvas.cpp Block.h Line.h)
+set(SOURCE_FILES main.cpp Canvas.h Canvas.cpp Drawable.h Line.h Block.h )
 add_executable(${CMAKE_PROJECT_NAME} ${SOURCE_FILES})
 target_link_libraries(${CMAKE_PROJECT_NAME} ${GTKMM_LIBRARIES})

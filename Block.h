@@ -1,8 +1,9 @@
 #pragma once
 
+#include "Drawable.h"
 #include "Canvas.h"
 
-class Block {
+class Block : public Drawable {
 private:
 	Block* next=nullptr;
 

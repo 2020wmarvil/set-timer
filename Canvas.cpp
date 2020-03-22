@@ -20,7 +20,7 @@ bool Canvas::on_button_press_event(GdkEventButton* event) {
                     click2 = true;
                     isDragging = false;
 
-                    lines.push_back( { clicked_x, clicked_y, mouse_x, mouse_y } );
+                    drawables.push_back(new Line(clicked_x, clicked_y, mouse_x, mouse_y));
 
                     queue_draw();
                 } break;
@@ -28,7 +28,7 @@ bool Canvas::on_button_press_event(GdkEventButton* event) {
                 click1 = false; click2 = false;
                 isDragging = false;
 
-                blocks.push_back( { (int)event->x, (int)event->y } );
+                drawables.push_back(new Block(mouse_x, mouse_y));
 
                 queue_draw();
 
@@ -59,8 +59,7 @@ bool Canvas::on_draw(const Cairo::RefPtr<Cairo::Context>& cr) {
     cr->set_line_width(2);
     cr->set_source_rgb(1, 1, 1);
 
-    for(Line line : lines) { line.draw(cr); }
-    for(Block block: blocks) { block.draw(cr); }
+    for(Drawable* drawable : drawables) { drawable->draw(cr); }
 
     switch (toolStatus) {
         case SELECT: {

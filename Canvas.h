@@ -7,6 +7,7 @@
 #include <gtkmm/drawingarea.h>
 #include <gtkmm/builder.h>
 
+#include "Drawable.h"
 #include "Line.h"
 #include "Block.h"
 
@@ -18,8 +19,8 @@ class Canvas : public Gtk::DrawingArea {
 private:
     Glib::RefPtr<Gtk::Builder> m_refGlade;
 
-    std::vector<Line> lines;
-    std::vector<Block> blocks;
+    std::vector<Drawable*> drawables;
+    
     bool click1=false, click2=false, isDragging=false;
 
     int clicked_x, clicked_y;
