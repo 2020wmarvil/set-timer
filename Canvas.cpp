@@ -69,17 +69,9 @@ bool Canvas::on_draw(const Cairo::RefPtr<Cairo::Context>& cr) {
         cr->line_to(i.x2,i.y2);
     } //cr->stroke();
     for(Block i: blocks) {
-	/*cr->move_to(i.getX()-25,i.getY()-25);
-	cr->line_to(i.getX()-25,i.getY()+25);
-	cr->line_to(i.getX()+25,i.getY()-25);
-	cr->move_to(i.getX()+25,i.getY()+25);
-	cr->line_to(i.getX()-25,i.getY()+25);
-	cr->line_to(i.getX()+25,i.getY()-25);*/
-	cr->move_to(i.getX()-25,i.getY()-25);
-	cr->line_to(i.getX()-25,i.getY()+25);
-	cr->line_to(i.getX()+25,i.getY()+25);
-	cr->line_to(i.getX()+25,i.getY()-25);
-	cr->line_to(i.getX()-25,i.getY()-25);
+	cr->rectangle(i.getX()-25,i.getY()-25,50,50);
+	cr->rectangle(i.getX()-30,i.getY()-5,5,5);
+	cr->rectangle(i.getX()+25,i.getY()-5,5,5);
     }
     cr->move_to(x1, y1);
     cr->line_to(x2, y2);
@@ -108,3 +100,4 @@ void Canvas::draw_text(const Cairo::RefPtr<Cairo::Context>& cr, const Glib::ustr
     cr->move_to((800-text_width)/2, (400-text_height)/2);
     layout->show_in_cairo_context(cr);
 }
+
