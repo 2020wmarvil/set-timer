@@ -38,13 +38,11 @@ bool Canvas::on_button_press_event(GdkEventButton* event) {
 }
 
 bool Canvas::on_motion_notify_event(GdkEventMotion* event) {
-    if (isDragging) {
-        mouse_x = event->x; mouse_y = event->y;
+    mouse_x = event->x; mouse_y = event->y;
 
-        queue_draw();
+    queue_draw();
 
-        return true;
-    } return false;
+    return true;
 }
 
 bool Canvas::on_draw(const Cairo::RefPtr<Cairo::Context>& cr) {
@@ -62,29 +60,22 @@ bool Canvas::on_draw(const Cairo::RefPtr<Cairo::Context>& cr) {
     cr->set_source_rgb(1, 1, 1);
 
     for(Line line : lines) { line.draw(cr); }
+    for(Block block: blocks) { block.draw(cr); }
 
-    if (isDragging && toolStatus == LINE) {
-        switch (toolStatus) {
-            case SELECT:
-                break;
-            case LINE:
-            {
+    switch (toolStatus) {
+        case SELECT: {
+            break;
+        } case LINE: {
+            if (isDragging && toolStatus == LINE) {
                 Line line(clicked_x, clicked_y, mouse_x, mouse_y);
                 line.draw(cr);
-                break;
-            }
-            case BLOCK:
-            {
-                //Block block(something);
-                //block.draw(cr);
-                break;
-            }
+            } break;
+        } case BLOCK: {
+            Block block(mouse_x, mouse_y);
+            block.draw(cr);
+            break;
         }
     } if(click2) { click1 = false; click2 = false; }
-
-    for(Block block: blocks) {
-        block.draw(cr);
-    }
 
     cr->restore();
 
