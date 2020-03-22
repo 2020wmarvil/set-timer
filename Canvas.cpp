@@ -28,7 +28,7 @@ bool Canvas::on_button_press_event(GdkEventButton* event) {
                 click1 = false; click2 = false;
                 isDragging = false;
 
-                blocks.push_back(*(new Block((int)event->x,(int)event->y)));
+                blocks.push_back( { (int)event->x, (int)event->y } );
 
                 queue_draw();
 
@@ -82,16 +82,9 @@ bool Canvas::on_draw(const Cairo::RefPtr<Cairo::Context>& cr) {
         }
     } if(click2) { click1 = false; click2 = false; }
 
-    for(Block i: blocks) {
-        cr->rectangle(i.getX()-25,i.getY()-25,50,50);
-        cr->rectangle(i.getX()-30,i.getY()-5,5,5);
-        cr->rectangle(i.getX()+25,i.getY()-5,5,5);
-        if(i.getNext()!=nullptr) {
-          cr->move_to(i.getX()+30,i.getY());
-          Block* next = i.getNext();
-          cr->line_to(next->getX()-30,next->getY());
-        }
-    } cr->stroke();
+    for(Block block: blocks) {
+        block.draw(cr);
+    }
 
     cr->restore();
 
