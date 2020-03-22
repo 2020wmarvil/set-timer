@@ -10,17 +10,18 @@ bool Canvas::on_button_press_event(GdkEventButton* event) {
                 break;
             case LINE:
                 if(!click1 && !click2) {
-                    x1 = event->x; y1 = event->y;
+                    clicked_x = event->x; clicked_y = event->y;
                     click1 = true;
                     isDragging = true;
                 }
 
-                if(click1 && !click2 && (int)event->x != x1 && (int)event->y != y1) {
-                    x2 = event->x; y2 = event->y;
+                if(click1 && !click2 && (int)event->x != clicked_x && (int)event->y != clicked_y) {
+                    mouse_x = event->x; mouse_y = event->y;
                     click2 = true;
                     isDragging = false;
 
-                    lines.push_back( { x1, y1, x2, y2 } );
+                    lines.push_back( { clicked_x, clicked_y, mouse_x, mouse_y } );
+
                     queue_draw();
                 } break;
             case BLOCK:
@@ -38,7 +39,7 @@ bool Canvas::on_button_press_event(GdkEventButton* event) {
 
 bool Canvas::on_motion_notify_event(GdkEventMotion* event) {
     if (isDragging) {
-        x2 = event->x; y2 = event->y;
+        mouse_x = event->x; mouse_y = event->y;
 
         queue_draw();
 
@@ -60,36 +61,26 @@ bool Canvas::on_draw(const Cairo::RefPtr<Cairo::Context>& cr) {
     cr->set_line_width(2);
     cr->set_source_rgb(1, 1, 1);
 
-    for(line i : lines) {
-        int x1 = i.x1, y1 = i.y1, x2 = i.x2; int y2 = i.y2; int x3, y3, x4, y4;
-        int angle = 45;
-        double theta = angle * (M_PI / 180);
+    for(Line line : lines) { line.draw(cr); }
 
-        int distance = 10;
-        int mx, my;
-        int vx = x2 - x1;
-        int vy = y2 - y1;
-        double vmag = sqrt(vx*vx + vy*vy);
-        double ux = vx / vmag;
-        double uy = vy / vmag;
-        mx = x2 - distance * ux;
-        my = y2 - distance * uy;
-
-        x3 = (mx-x2)*cos(theta) - (my-y2)*sin(theta) + mx;
-        y3 = (mx-x2)*sin(theta) + (my-y2)*cos(theta) + my;
-
-        theta = -theta;
-
-        x4 = (mx-x2)*cos(theta) - (my-y2)*sin(theta) + mx;
-        y4 = (mx-x2)*sin(theta) + (my-y2)*cos(theta) + my;
-
-        cr->move_to(i.x1,i.y1);
-        cr->line_to(i.x2,i.y2);
-        cr->move_to(x2, y2);
-        cr->line_to(x3, y3);
-        cr->move_to(x2, y2);
-        cr->line_to(x4, y4);
-    } cr->stroke();
+    if (isDragging && toolStatus == LINE) {
+        switch (toolStatus) {
+            case SELECT:
+                break;
+            case LINE:
+            {
+                Line line(clicked_x, clicked_y, mouse_x, mouse_y);
+                line.draw(cr);
+                break;
+            }
+            case BLOCK:
+            {
+                //Block block(something);
+                //block.draw(cr);
+                break;
+            }
+        }
+    } if(click2) { click1 = false; click2 = false; }
 
     for(Block i: blocks) {
         cr->rectangle(i.getX()-25,i.getY()-25,50,50);
@@ -102,10 +93,6 @@ bool Canvas::on_draw(const Cairo::RefPtr<Cairo::Context>& cr) {
         }
     } cr->stroke();
 
-    cr->move_to(x1, y1);
-    cr->line_to(x2, y2);
-    cr->stroke();
-    if(click2) { click1 = false; click2 = false; }
     cr->restore();
 
     cr->save();
