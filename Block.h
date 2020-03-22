@@ -15,6 +15,12 @@ public:
 	void draw(const Cairo::RefPtr<Cairo::Context>& cr) {
 		int x_off = width / 6; int y_off = height / 6;
 
+		cr->save();
+		cr->set_source_rgba(0.36, 0, .25, 0.5);
+		cr->rectangle(x, y, width, height);
+		cr->fill();
+		cr->restore();
+
 		cr->rectangle(x, y, width, height);
 		cr->rectangle(x - x_off, y + height/2 - y_off/2, x_off, y_off);
 		cr->rectangle(x + width, y + height/2 - y_off/2, x_off, y_off);
