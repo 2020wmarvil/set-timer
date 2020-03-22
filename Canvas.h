@@ -1,10 +1,13 @@
 #pragma once
 
 #include <vector>
+#include <cmath>
+#include <iostream>
 
 #include <gtkmm/drawingarea.h>
 #include <gtkmm/builder.h>
 #include "Block.h"
+
 enum ToolStatus { SELECT, LINE, BLOCK };
 
 extern int toolStatus;

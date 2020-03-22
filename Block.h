@@ -1,7 +1,7 @@
 #pragma once
 class Block {
 	private:
-		Block* next;
+		Block* next=nullptr;
 		int x,y;
 	public:
 		Block(int x,int y) {
@@ -14,6 +14,7 @@ class Block {
 		Block* getNext() {
 			return next;
 		}
+		void setNext(Block &other) {next=&other;}
 		int getX() {return x;}
 		int getY() {return y;}
 };

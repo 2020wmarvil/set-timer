@@ -27,13 +27,8 @@ bool Canvas::on_button_press_event(GdkEventButton* event) {
                 click1 = false; click2 = false;
                 isDragging = false;
 
-                int size = 50;
+                blocks.push_back(*(new Block((int)event->x,(int)event->y)));
 
-                /*lines.push_back( { (int)event->x-size, (int)event->y-size, (int)event->x+size, (int)event->y-size } );
-                lines.push_back( { (int)event->x-size, (int)event->y-size, (int)event->x-size, (int)event->y+size } );
-                lines.push_back( { (int)event->x+size, (int)event->y+size, (int)event->x+size, (int)event->y-size } );
-                lines.push_back( { (int)event->x+size, (int)event->y+size, (int)event->x-size, (int)event->y+size } );*/
-		blocks.push_back(*(new Block((int)event->x,(int)event->y)));
                 queue_draw();
 
                 break;
@@ -64,15 +59,49 @@ bool Canvas::on_draw(const Cairo::RefPtr<Cairo::Context>& cr) {
     cr->save();
     cr->set_line_width(2);
     cr->set_source_rgb(1, 1, 1);
+
     for(line i : lines) {
+        int x1 = i.x1, y1 = i.y1, x2 = i.x2; int y2 = i.y2; int x3, y3, x4, y4;
+        int angle = 45;
+        double theta = angle * (M_PI / 180);
+
+        int distance = 10;
+        int mx, my;
+        int vx = x2 - x1;
+        int vy = y2 - y1;
+        double vmag = sqrt(vx*vx + vy*vy);
+        double ux = vx / vmag;
+        double uy = vy / vmag;
+        mx = x2 - distance * ux;
+        my = y2 - distance * uy;
+
+        x3 = (mx-x2)*cos(theta) - (my-y2)*sin(theta) + mx;
+        y3 = (mx-x2)*sin(theta) + (my-y2)*cos(theta) + my;
+
+        theta = -theta;
+
+        x4 = (mx-x2)*cos(theta) - (my-y2)*sin(theta) + mx;
+        y4 = (mx-x2)*sin(theta) + (my-y2)*cos(theta) + my;
+
         cr->move_to(i.x1,i.y1);
         cr->line_to(i.x2,i.y2);
-    } //cr->stroke();
+        cr->move_to(x2, y2);
+        cr->line_to(x3, y3);
+        cr->move_to(x2, y2);
+        cr->line_to(x4, y4);
+    } cr->stroke();
+
     for(Block i: blocks) {
-	cr->rectangle(i.getX()-25,i.getY()-25,50,50);
-	cr->rectangle(i.getX()-30,i.getY()-5,5,5);
-	cr->rectangle(i.getX()+25,i.getY()-5,5,5);
-    }
+        cr->rectangle(i.getX()-25,i.getY()-25,50,50);
+        cr->rectangle(i.getX()-30,i.getY()-5,5,5);
+        cr->rectangle(i.getX()+25,i.getY()-5,5,5);
+        if(i.getNext()!=nullptr) {
+          cr->move_to(i.getX()+30,i.getY());
+          Block* next = i.getNext();
+          cr->line_to(next->getX()-30,next->getY());
+        }
+    } cr->stroke();
+
     cr->move_to(x1, y1);
     cr->line_to(x2, y2);
     cr->stroke();
@@ -100,4 +129,3 @@ void Canvas::draw_text(const Cairo::RefPtr<Cairo::Context>& cr, const Glib::ustr
     cr->move_to((800-text_width)/2, (400-text_height)/2);
     layout->show_in_cairo_context(cr);
 }
-
