@@ -20,19 +20,33 @@ bool Canvas::on_button_press_event(GdkEventButton* event) {
                 } break;
             case LINE:
                 if(!click1 && !click2) {
-                    clicked_x = event->x; clicked_y = event->y;
-                    click1 = true;
-                    isDragging = true;
+                    for (Block* block : blocks) {
+                        if (block->isOutgoingConnectionHovered(event->x, event->y)) {
+                            clicked_x = event->x; clicked_y = event->y;
+                            click1 = true;
+                            isDragging = true;
+                            source_block = block;
+                        }
+                    }
                 }
 
                 if(click1 && !click2 && (int)event->x != clicked_x && (int)event->y != clicked_y) {
-                    mouse_x = event->x; mouse_y = event->y;
-                    click2 = true;
-                    isDragging = false;
+                    for (Block* block : blocks) {
+                        if (block->isIncomingConnectionHovered(event->x, event->y)) {
+                            click2 = true;
+                            isDragging = false;
 
-                    lines.push_back(new Line(clicked_x, clicked_y, mouse_x, mouse_y));
+                            Line* line = new Line(clicked_x, clicked_y, mouse_x, mouse_y);
+                            line->setSource(source_block);
+                            line->setDest(block);
+                            source_block->setOutgoing(line);
+                            block->setIncoming(line);
 
-                    queue_draw();
+                            lines.push_back(line);
+
+                            queue_draw();
+                        }
+                    }
                 } break;
             case BLOCK:
                 click1 = false; click2 = false;

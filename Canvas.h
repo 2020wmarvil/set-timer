@@ -20,6 +20,7 @@ private:
 
     std::vector<Line*> lines;
     std::vector<Block*> blocks;
+    Block* source_block = nullptr;
     Block* selected_block = nullptr;
 
     bool click1=false, click2=false, isDragging=false;

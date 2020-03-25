@@ -1,12 +1,15 @@
 #pragma once
 
 #include "Canvas.h"
+#include "Block.h"
 
 class Line {
 private:
     double x1, x2, x3, x4;
     double y1, y2, y3, y4;
     int arrowHeadLength = 10;
+
+    Block *source = nullptr, *dest = nullptr;
 
     void calculateArrowHead() {
         int angle = 45;
@@ -47,4 +50,7 @@ public:
 
         cr->stroke();
     }
+
+    void setSource(Block* block) { source = block; }
+    void setDest(Block* block) { dest = block; }
 };
