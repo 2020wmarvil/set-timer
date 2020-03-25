@@ -1,9 +1,8 @@
 #pragma once
 
-#include "Drawable.h"
 #include "Canvas.h"
 
-class Line : public Drawable {
+class Line {
 private:
     double x1, x2, x3, x4;
     double y1, y2, y3, y4;
@@ -48,7 +47,4 @@ public:
 
         cr->stroke();
     }
-
-	void translate(double new_x, double new_y) {}
-	bool isClicked(double mouse_x, double mouse_y) { return false; }
 };

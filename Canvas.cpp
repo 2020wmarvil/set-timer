@@ -7,14 +7,14 @@ bool Canvas::on_button_press_event(GdkEventButton* event) {
                 click1 = false; click2 = false;
                 isDragging = false;
 
-                if (selected_drawable) {
-                    selected_drawable = nullptr;
+                if (selected_block) {
+                    selected_block = nullptr;
                     break;
-                } selected_drawable = nullptr;
+                } selected_block = nullptr;
 
-                for (Drawable* drawable : drawables) {
-                    if (drawable->isClicked(event->x, event->y)) {
-                        selected_drawable = drawable;
+                for (Block* block : blocks) {
+                    if (block->isClicked(event->x, event->y)) {
+                        selected_block = block;
                         break;
                     }
                 } break;
@@ -30,7 +30,7 @@ bool Canvas::on_button_press_event(GdkEventButton* event) {
                     click2 = true;
                     isDragging = false;
 
-                    drawables.push_back(new Line(clicked_x, clicked_y, mouse_x, mouse_y));
+                    lines.push_back(new Line(clicked_x, clicked_y, mouse_x, mouse_y));
 
                     queue_draw();
                 } break;
@@ -38,15 +38,15 @@ bool Canvas::on_button_press_event(GdkEventButton* event) {
                 click1 = false; click2 = false;
                 isDragging = false;
 
-                drawables.push_back(new Block(mouse_x, mouse_y));
+                blocks.push_back(new Block(mouse_x, mouse_y));
 
                 queue_draw();
 
                 break;
         } return true;
     } else if(event->type == GDK_BUTTON_PRESS && event->button == 3) {
-        for (Drawable* drawable : drawables) {
-            if (drawable->isClicked(event->x, event->y)) {
+        for (Block* block : blocks) {
+            if (block->isClicked(event->x, event->y)) {
                 // handle right click
                 break;
             }
@@ -57,8 +57,8 @@ bool Canvas::on_button_press_event(GdkEventButton* event) {
 bool Canvas::on_motion_notify_event(GdkEventMotion* event) {
     mouse_x = event->x; mouse_y = event->y;
 
-    if (selected_drawable) {
-        selected_drawable->translate(mouse_x, mouse_y);
+    if (selected_block) {
+        selected_block->translate(mouse_x, mouse_y);
     }
 
     queue_draw();
@@ -80,7 +80,13 @@ bool Canvas::on_draw(const Cairo::RefPtr<Cairo::Context>& cr) {
     cr->set_line_width(2);
     cr->set_source_rgb(1, 1, 1);
 
-    for(Drawable* drawable : drawables) { drawable->draw(cr); }
+    for(Block* block : blocks) {
+        block->draw(cr);
+    }
+
+    for(Line* line : lines) {
+        line->draw(cr);
+    }
 
     switch (toolStatus) {
         case SELECT: {
