@@ -15,6 +15,8 @@ bool Canvas::on_button_press_event(GdkEventButton* event) {
                 for (Block* block : blocks) {
                     if (block->isClicked(event->x, event->y)) {
                         selected_block = block;
+                        block->translate(event->x, event->y);
+                        queue_draw();
                         break;
                     }
                 } break;
