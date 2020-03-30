@@ -51,6 +51,15 @@ public:
         cr->stroke();
     }
 
+    void setSourcePoint(int x, int y) {
+        x1 = x; y1 = y;
+        calculateArrowHead();
+    }
+    void setDestPoint(int x, int y) {
+        x2 = x; y2 = y;
+        calculateArrowHead();
+    }
+
     void setSource(Block* block) { source = block; }
     void setDest(Block* block) { dest = block; }
 };

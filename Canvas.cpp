@@ -18,6 +18,8 @@ bool Canvas::on_button_press_event(GdkEventButton* event) {
                     if (block->isClicked(mouse_x, mouse_y)) {
                         selected_block = block;
                         block->translate(mouse_x, mouse_y);
+                        block->next->setSourcePoint(block->getOutgoingNodeCenterX(), block->getOutgoingNodeCenterY());
+                        block->prev->setDestPoint(block->getIncomingNodeCenterX(), block->getIncomingNodeCenterY());
                         queue_draw();
                         break;
                     }
@@ -80,6 +82,8 @@ bool Canvas::on_motion_notify_event(GdkEventMotion* event) {
         case SELECT:
             if (selected_block) {
                 selected_block->translate(mouse_x, mouse_y);
+                selected_block->next->setSourcePoint(selected_block->getOutgoingNodeCenterX(), selected_block->getOutgoingNodeCenterY());
+                selected_block->prev->setDestPoint(selected_block->getIncomingNodeCenterX(), selected_block->getIncomingNodeCenterY());
             } break;
         case LINE:
             for (Block* block : blocks) {
